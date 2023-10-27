@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block page_content %}
+<html lang="en">
+<head>
+  <style>
+    .flex-container {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .flex-text, .flex-image {
+        flex: 1;
+        padding: 10px;
+    }
+
+    .flex-image img {
+        width: 100%;
+        max-height: 300px;
+        object-fit: contain;
+    }
+
+      .red-text {
+    color: red;
+}
+
+.green-text {
+    color: green;
+}
+
+  </style>
+    <meta charset="UTF-8">
+    <title>股票大数据可视化</title>
+</head>
+<body>
+<div class="mdui-container">
+    <div class="mdui-card">
+        <div class="mdui-card-header">
+            <img class="mdui-card-header-avatar" src="{{ url_for('static', filename='reference/同花顺.jpeg') }}"/>
+            <div class="mdui-card-header-title">个股信息大全展示</div>
+            <div class="mdui-card-header-subtitle">Financial Analysis Visualization</div>
+        </div>
+        <div class="mdui-card">
+            <div class="flex-container">
+                <!-- 文字部分 -->
+                <div class="flex-text">
+                    <p><strong>代码:</strong> {{ query['代码'] }}</p>
+                    <p><strong>名称:</strong> {{ query['名称'] }}</p>
+                    <p><strong>最新价:</strong> {{ query['最新价'] }}</p>
+                    {% if  query['涨跌幅']>0 %}
+                     <p class="red-text"><strong >涨跌幅:</strong> {{ query['涨跌幅'] }}%</p>
+                    {% else %}
+                    <p class="green-text"><strong >涨跌幅:</strong> {{ query['涨跌幅'] }}%</p>
+                    {% endif %}
+                    <p><strong>成交量:</strong> {{ round(query['成交量']/10000,2) }}万手</p>
+                    <p><strong>换手率:</strong> {{ query['换手率'] }}%</p>
+                    <p><strong>总市值:</strong> {{ round(query['总市值']/100000000,2) }}亿</p>
+                    <p><strong>流通市值:</strong> {{ round(query['流通市值']/100000000,2) }}亿</p>
+                    <p><strong>市盈率:</strong> {{ query['市盈率-动态'] }}</p>
+                    <p><strong>60日涨跌幅:</strong> {{ query['60日涨跌幅'] }}%</p>
+                    <p><strong>年初至今涨跌幅:</strong> {{ query['年初至今涨跌幅'] }}%</p>
+                    {% if  score_20>15 %}
+                    <p class="red-text"><strong >20日体面指数:</strong> {{ score_20 }}</p>
+                    {% else %}
+                    <p class="green-text"><strong >20日体面指数:</strong> {{ score_20 }}</p>
+                    {% endif %}
+                    {% if  score_5>5 %}
+                    <p  class="red-text"><strong>5日体面指数:</strong> {{ score_5 }}</p>
+                    {% else %}
+                    <p class="green-text"><strong >5日体面指数:</strong> {{ score_5 }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- 图片部分 -->
+                <div class="flex-image">
+                    <img src="{{ url_for('static', filename='reference/大美女1.jpg') }}" alt="Stock Image">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+{% endblock %}
